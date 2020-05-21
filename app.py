@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import reqparse, Resource, Api
 from infer import infer
+from search import findRestaurant
 
 app = Flask(__name__)
 api = Api(app)
@@ -13,8 +14,10 @@ class Predict(Resource):
         args = parser.parse_args()
 
         try: 
-            output = infer(args['image'])
-            return {"name": output}
+            category = infer(args['image'])
+            restaurants = findRestaurant(category)
+
+            return {"restaurants": restaurants}
         except:
             return {"message": "something wrong happened, perhaps wrong base64 format"}
 

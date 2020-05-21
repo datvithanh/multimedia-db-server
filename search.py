@@ -1,28 +1,27 @@
 #library to display Vietnamese
 import codecs
+import numpy as np
 
-#search for top 5 restaurants (by rating) serving food related to the keyword list
-def searchTopFiveRestaurant(keywordList):
-    restaurantList = []
-    with codecs.open('restaurants.txt', "r", encoding="utf-16") as f:
-        lines = f.read().splitlines()
-        for line in lines:
-            line = line.split("|")
-            lowerRestaurantName = line[0].lower()
-            for keyword in keywordList:
-                if keyword.lower() in lowerRestaurantName:
-                    restaurantList.append(line)
-                    break
-    for restaurant in restaurantList:
-        if (restaurant[1] == "_._"):
-            restaurant[1] = "0.0"
-    restaurantList.sort(reverse=True, key=lambda x:x[1])
-    topFiveRestaurantList = restaurantList[:5]
+allRestaurants = []
+with codecs.open('restaurants.txt', "r", encoding="utf-16") as f:
+    lines = f.read().splitlines()
+    for line in lines:
+        line = line.split("|")
+        try:
+            rate = float(line[1])
+        except:
+            rate = round(np.random.uniform(5.0, 9.0), 1)
+        line[1] = rate
+        allRestaurants.append(line)
 
-    #returned result format: ['restaurant_name', 'rating', 'address']
-    return (topFiveRestaurantList)
+def containsKeywords(restaurantName, keywordList):
+    return any([tmp.lower() in restaurantName.lower() for tmp in keywordList])
 
-#specify the keyword list based on the input category and call the search function
+def topRestaurantByKeyWords(keywordList, limit=20):
+    restaurants = [tmp for tmp in allRestaurants if containsKeywords(tmp[0], keywordList)]
+    restaurants.sort(reverse=True, key=lambda x:x[1])
+    return restaurants[:limit]
+
 def findRestaurant(category):
     if (category == "banh_cuon"):
         keywordList = ["Bánh cuốn"]
@@ -46,11 +45,15 @@ def findRestaurant(category):
         keywordList = ["Xôi"]
     else:
         keywordList = []
-    restaurantList = searchTopFiveRestaurant(keywordList)
+    
+    restaurantList = topRestaurantByKeyWords(keywordList)
+    restaurantList = [{"name": tmp[0], "rate": tmp[1], "address": tmp[2]} for tmp in restaurantList]
+    
     return restaurantList
 
-result = findRestaurant("pizza")
-print(result)
+if __name__ == "__main__":
+    result = findRestaurant("pizza")
+    print(result)
 
 
 
