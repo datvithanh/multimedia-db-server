@@ -2,9 +2,11 @@ from flask import Flask
 from flask_restful import reqparse, Resource, Api
 from infer import infer
 from search import findRestaurant
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 parser = reqparse.RequestParser()
 parser.add_argument('image')
