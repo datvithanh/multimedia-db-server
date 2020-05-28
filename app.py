@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import reqparse, Resource, Api
 from infer import infer
 from search import findRestaurant
@@ -15,13 +15,13 @@ class Predict(Resource):
     def post(self):
         args = parser.parse_args()
 
-        try: 
-            category = infer(args['image'])
-            restaurants = findRestaurant(category)
+        #try: 
+        category = infer(args['image'])
+        restaurants = findRestaurant(category)
 
-            return {"restaurants": restaurants}
-        except:
-            return {"message": "something wrong happened, perhaps wrong base64 format"}
+        return {"restaurants": restaurants}
+        #except:
+            #return {"message": "something wrong happened, perhaps wrong base64 format"}
 
 api.add_resource(Predict, '/predict')
 

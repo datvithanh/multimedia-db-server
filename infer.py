@@ -22,6 +22,7 @@ def preprocess_image(image):
     return batch_inp
 
 def infer(base64):
+    print(len(base64))
     im = stringToRGB(base64)
     inp = preprocess_image(im).astype(np.float32)
 

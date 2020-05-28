@@ -22,6 +22,10 @@ def topRestaurantByKeyWords(keywordList, limit=20):
     restaurants.sort(reverse=True, key=lambda x:x[1])
     return restaurants[:limit]
 
+def generate_random_coordination():
+    longitude, latitude = 21.018 + np.random.uniform(-0.035, 0.035), 105.835 + np.random.uniform(-0.035, 0.035)
+    return longitude, latitude
+
 def findRestaurant(category):
     if (category == "banh_cuon"):
         keywordList = ["Bánh cuốn"]
@@ -47,7 +51,7 @@ def findRestaurant(category):
         keywordList = []
     
     restaurantList = topRestaurantByKeyWords(keywordList)
-    restaurantList = [{"name": tmp[0], "rate": tmp[1], "address": tmp[2]} for tmp in restaurantList]
+    restaurantList = [{"name": tmp[0], "rate": tmp[1], "address": tmp[2], "coordination": generate_random_coordination()} for tmp in restaurantList]
     
     return restaurantList
 
