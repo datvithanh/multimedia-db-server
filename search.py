@@ -26,6 +26,11 @@ def generate_random_coordination():
     longitude, latitude = 21.018 + np.random.uniform(-0.035, 0.035), 105.835 + np.random.uniform(-0.035, 0.035)
     return longitude, latitude
 
+image_urls = [f'https://aiwre-s3.s3-ap-southeast-1.amazonaws.com/spcloud/restaurant-img/{tmp}.jpg' for tmp in range(531) if tmp not in [37, 46, 81, 95, 211, 408, 434, 460, 469]]
+
+def random_images():
+    return np.random.choice(image_urls, 2)
+
 def findRestaurant(category):
     if (category == "banh_cuon"):
         keywordList = ["Bánh cuốn"]
@@ -51,7 +56,7 @@ def findRestaurant(category):
         keywordList = []
     
     restaurantList = topRestaurantByKeyWords(keywordList)
-    restaurantList = [{"name": tmp[0], "rate": tmp[1], "address": tmp[2], "coordination": generate_random_coordination()} for tmp in restaurantList]
+    restaurantList = [{"name": tmp[0], "rate": tmp[1], "address": tmp[2], "coordination": generate_random_coordination(), "images": random_images()} for tmp in restaurantList]
     
     return restaurantList
 
