@@ -21,7 +21,7 @@ def preprocess_image(image):
     batch_inp = np.expand_dims(resized_img, axis=0)
     return batch_inp
 
-def infer(im):
+def infer(base64):
     im = stringToRGB(base64)
     inp = preprocess_image(im).astype(np.float32)
 
@@ -31,8 +31,10 @@ def infer(im):
     output_data = interpreter.get_tensor(178)
     class_idx = np.argmax(output_data[0])
 
-    if output_data[0][class_idx] < sum(output_data[0])/2:
+    print(output_data[0][class_idx], sum(output_data[0]))
+    if output_data[0][class_idx]/sum(output_data[0]) < 0.94:
         return -1
+
     return CLASS_NAMES[class_idx]
 
     

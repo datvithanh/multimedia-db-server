@@ -29,7 +29,7 @@ def generate_random_coordination():
 image_urls = [f'https://aiwre-s3.s3-ap-southeast-1.amazonaws.com/spcloud/restaurant-img/{tmp}.jpg' for tmp in range(531) if tmp not in [37, 46, 81, 95, 211, 408, 434, 460, 469]]
 
 def random_images():
-    return np.random.choice(image_urls, 2)
+    return list(np.random.choice(image_urls, 2))
 
 def findRestaurant(category):
     if (category == "banh_cuon"):
