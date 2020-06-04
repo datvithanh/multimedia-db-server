@@ -15,11 +15,14 @@ class Predict(Resource):
     def post(self):
         args = parser.parse_args()
 
-        #try: 
         category = infer(args['image'])
+        #404
+        if category == -1:
+            return {"restaurants": [], "message": "your image doesn't match any of the categories"}
+
         restaurants = findRestaurant(category)
 
-        return {"restaurants": restaurants}
+        return {"restaurants": restaurants, "message": "success"}
         #except:
             #return {"message": "something wrong happened, perhaps wrong base64 format"}
 
