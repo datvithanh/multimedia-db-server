@@ -32,7 +32,7 @@ def infer(base64):
     class_idx = np.argmax(output_data[0])
 
     print(output_data[0][class_idx], sum(output_data[0]))
-    if output_data[0][class_idx]/sum(output_data[0]) < 0.94:
+    if output_data[0][class_idx]/sum(output_data[0]) < 0.90:
         return -1
 
     return CLASS_NAMES[class_idx]
